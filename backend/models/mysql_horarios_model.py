@@ -28,8 +28,8 @@ class HorariosModel:
         for result in rv:
             content = {'horario_id': result[0], 
                        'dia': result[1], 
-                       'hora_inicio': result[2],
-                       'hora_fin': result[3]
+                       'hora_inicio': str(result[2]),
+                       'hora_fin': str(result[3])
                        }
             data.append(content)
             content = {}

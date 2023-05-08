@@ -47,5 +47,16 @@ class AlumnosModel:
         data = {'result': 1}
         return data
 
+    def alumno_update(self, usuario_id):    
+        data = {
+            'usuario_id' : usuario_id,
+        }  
+        query = """update alumnos where  usuario_id=%(usuario_id)s"""    
+        cursor = self.mysql_pool.execute(query, data, commit=True)   
+
+        data['id'] = cursor.lastrowid
+        return data
+
+
 if __name__ == "__main__":    
     tm = AlumnosModel()

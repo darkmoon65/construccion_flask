@@ -31,3 +31,10 @@ def curso():
 @cross_origin()
 def cursos():
     return jsonify(model.get_cursos())
+ 
+@curso_blueprint.route('/update_curso', methods=['PATCH'])
+@cross_origin()
+def update_curso():
+    content = model.update_curso(request.json['nombre'], 
+                                 request.json['descripcion'])    
+    return jsonify(content)

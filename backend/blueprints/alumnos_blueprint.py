@@ -31,3 +31,9 @@ def alumno():
 @cross_origin()
 def alumnos():
     return jsonify(model.get_alumnos())
+
+@alumno_blueprint.route('/alumno_update', methods=['PATCH'])
+@cross_origin()
+def alumno_update():
+    content = model.alumno_update(request.json['usuario_id'])    
+    return jsonify(content)

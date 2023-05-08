@@ -27,7 +27,15 @@ def delete_profesor():
 def profesor():
     return jsonify(model.get_profesor(int(request.json['profesor_id'])))
 
-@profesor_blueprint.route('/profesores', methods=['POST'])
+@profesor_blueprint.route('/profesores', methods=['GET'])
 @cross_origin()
 def profesors():
     return jsonify(model.get_profesores())
+
+
+@profesor_blueprint.route('/update_profesor', methods=['PATCH'])
+@cross_origin()
+def update_profesor():
+    content = model.update_profesor(request.json['usuario_id'], request.json['profesor_id'])    
+
+    return jsonify(content)

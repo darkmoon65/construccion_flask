@@ -50,5 +50,19 @@ class CursosModel:
         data = {'result': 1}
         return data
 
+    def update_curso(self, nombre, descripcion):    
+        data = {
+            'curso_id' : curso_id,
+            'nombre' : nombre,
+            'descripcion' : descripcion,
+        }  
+        query = """update cursos set (
+            nombre = %(nombre)s,
+            descripcion = %(desripcion)s) where id = %(curso_id)s)"""    
+        cursor = self.mysql_pool.execute(query, data, commit=True)   
+
+        data['id'] = cursor.lastrowid
+        return data
+
 if __name__ == "__main__":    
     tm = CursosModel()

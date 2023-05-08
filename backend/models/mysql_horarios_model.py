@@ -21,7 +21,7 @@ class HorariosModel:
         return data
 
     def get_horarios(self):  
-        rv = self.mysql_pool.execute("""SELECT H.id, H.dia, H.hora_inicio, H.hora_fin, 
+        rv = self.mysql_pool.execute("""SELECT H.id, H.dia, H.hora_inicio, H.hora_fin 
                                         from horarios H""")  
         data = []
         content = {}

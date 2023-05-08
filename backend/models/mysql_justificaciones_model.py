@@ -14,36 +14,35 @@ class justificacionesModel:
         for result in rv:
             content = {'justificacion_id': result[0],
             'descripcion': result[1],
-            'estado': result[1], 
-            'fecha_creacion': result[2]}
+            'estado': result[2], 
+            'fecha_creacion': result[3]}
             data.append(content)
             content = {}
         return data
 
-    def get_justificacions(self):  
-        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI, 
-                                        U.path_foto, U.vector from justificacions U""")  
+    def get_justificaciones(self):  
+        rv = self.mysql_pool.execute("""SELECT J.id, J.descripcion, J.estado, 
+                                        J.fecha_creacion from justificaciones J""")  
         data = []
         content = {}
         for result in rv:
             content = {'justificacion_id': result[0], 
-                       'nombre_justificacion': result[1], 
-                       'dni_justificacion': result[2],
-                       'ruta_foto': result[3],
-                       'vector': result[4]
+                       'descripcion': result[1], 
+                       'estado': result[2],
+                       'fecha_creacion': result[3]
                        }
             data.append(content)
             content = {}
         return data
 
-    def create_justificacion(self, nombre, dni, password):    
+    def create_justificacion(self, descripcion, estado, fecha_creacion):    
         data = {
-            'nombre' : nombre,
-            'dni' : dni,
-            'password' : password,
+            'descripcion' :descripcion,
+            'estado' : estado,
+            'fecha_creacion' : fecha_creacion,
         }  
-        query = """insert into justificacions (nombre, DNI, password) 
-            values (%(nombre)s, %(dni)s, %(password)s)"""    
+        query = """insert into justificaciones (descripcion, estado, fecha_creacion) 
+            values (%(descripcion)s, %(estado)s, %(fecha_creacion)s)"""    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 
         data['id'] = cursor.lastrowid
@@ -51,7 +50,7 @@ class justificacionesModel:
 
     def delete_justificacion(self, justificacion_id):    
         params = {'justificacion_id' : justificacion_id}      
-        query = """delete from justificacions where id = %(justificacion_id)s """    
+        query = """delete from justificaciones where id = %(justificacion_id)s """    
         self.mysql_pool.execute(query, params, commit=True)   
 
         data = {'result': 1}
@@ -59,20 +58,16 @@ class justificacionesModel:
 
 
 
-    def update_justificacion(self, justificacion_id, dni, nombre, password, path_foto, vector ):    
+    def update_justificacion(self, justificacion_id, descripcion, estado, fecha_creacion ):    
         params = {'justificacion_id' : justificacion_id,
-                'nombre' : nombre,
-                'DNI' : dni,
-                'password' : password,
-                'path_foto' : path_foto,
-                'vector' : vector,
+                'descripcion' : descripcion,
+                'estado' : estado,
+                'fecha_creacion' : fecha_creacion,
         }      
-        query = """update justificacions set 
-                    nombre = %(nombre)s,
-                    DNI = %(DNI)s,
-                    password = %(password)s,
-                    path_foto = %(path_foto)s,
-                    vector =%(vector)s
+        query = """update justificaciones set 
+                    descripcion = %(descripcion)s,
+                    estado = %(estado)s,
+                    fecha_creacion =%(fecha_creacion)s
                     where id = %(justificacion_id)s """    
         self.mysql_pool.execute(query, params, commit=True)   
 

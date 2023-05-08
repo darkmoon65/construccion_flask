@@ -6,40 +6,41 @@ from werkzeug.utils import secure_filename
 import json
 from flask_cors import CORS, cross_origin 
 
-from backend.models.mysql_usuarios_model import UsuariosModel
-model = UsuariosModel()
+from backend.models.mysql_justificaciones_model import justificacionesModel
+model = justificacionesModel()
 
-usuario_blueprint = Blueprint('usuario_blueprint', __name__)
+justificacion_blueprint = Blueprint('justificacion_blueprint', __name__)
 
-@usuario_blueprint.route('/usuario_create', methods=['POST'])
+@justificacion_blueprint.route('/justificacion_create', methods=['POST'])
 @cross_origin()
-def create_usuario():
-    content = model.create_usuario(request.json['nombre'],request.json['dni'], 
-              request.json['password'], request.json['path_foto'], 
-              request.json['vector'] )    
+def create_justificacion():
+    content = model.create_justificacion(
+              request.json['descripcion'], 
+              request.json['estado'], 
+              request.json['fecha_creacion'] )    
     return jsonify(content)
 
-@usuario_blueprint.route('/usuario', methods=['DELETE'])
+@justificacion_blueprint.route('/justificacion', methods=['DELETE'])
 @cross_origin()
-def delete_usuario():
-    return jsonify(model.delete_usuario(int(request.json['usuario_id'])))
+def delete_justificacion():
+    return jsonify(model.delete_justificacion(int(request.json['justificacion_id'])))
 
-@usuario_blueprint.route('/usuario', methods=['POST'])
+@justificacion_blueprint.route('/justificacion', methods=['POST'])
 @cross_origin()
-def usuario():
-    return jsonify(model.get_usuario(int(request.json['usuario_id'])))
+def justificacion():
+    return jsonify(model.get_justificacion(int(request.json['justificacion_id'])))
 
-@usuario_blueprint.route('/usuarios', methods=['GET'])
+@justificacion_blueprint.route('/justificaciones', methods=['GET'])
 @cross_origin()
-def usuarios():
-    return jsonify(model.get_usuarios())
+def justificaciones():
+    return jsonify(model.get_justificaciones())
 
-@usuario_blueprint.route('/update_usuario', methods=['PATCH'])
+@justificacion_blueprint.route('/update_justificacion', methods=['PATCH'])
 @cross_origin()
-def update_usuario():
-    content = model.update_usuario(request.json['usuario_id'],request.json['dni'],
-              request.json['nombre'], request.json['password'] , request.json['path_foto'], 
-              request.json['vector'])    
+def update_justificacion():
+    content = model.update_justificacion(request.json['justificacion_id'],
+              request.json['descripcion'], request.json['estado'], 
+              request.json['fecha_creacion'])    
 
     return jsonify(content)
 

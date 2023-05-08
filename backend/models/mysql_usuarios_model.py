@@ -17,11 +17,17 @@ class UsuariosModel:
         return data
 
     def get_usuarios(self):  
-        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI from usuarios U""")  
+        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI, 
+                                        U.path_foto, U.vector from usuarios U""")  
         data = []
         content = {}
         for result in rv:
-            content = {'usuario_id': result[0], 'nombre_usuario': result[1], 'dni_usuario': result[2]}
+            content = {'usuario_id': result[0], 
+                       'nombre_usuario': result[1], 
+                       'dni_usuario': result[2],
+                       'ruta_foto': result[3],
+                       'vector': result[4]
+                       }
             data.append(content)
             content = {}
         return data
@@ -47,5 +53,27 @@ class UsuariosModel:
         data = {'result': 1}
         return data
 
+
+
+    def update_usuario(self, usuario_id, dni, nombre, password, path_foto, vector ):    
+        params = {'usuario_id' : usuario_id,
+                'nombre' : nombre,
+                'DNI' : dni,
+                'password' : password,
+                'path_foto' : path_foto,
+                'vector' : vector,
+        }      
+        query = """update usuarios set 
+                    nombre = %(nombre)s,
+                    DNI = %(DNI)s,
+                    password = %(password)s,
+                    path_foto = %(path_foto)s,
+                    vector =%(vector)s
+                    where id = %(usuario_id)s """    
+        self.mysql_pool.execute(query, params, commit=True)   
+
+        data = {'result': 1}
+        return data
+ 
 if __name__ == "__main__":    
     tm = UsuariosModel()

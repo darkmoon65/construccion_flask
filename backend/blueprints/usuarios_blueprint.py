@@ -14,7 +14,9 @@ usuario_blueprint = Blueprint('usuario_blueprint', __name__)
 @usuario_blueprint.route('/usuario_create', methods=['POST'])
 @cross_origin()
 def create_usuario():
-    content = model.create_usuario(request.json['nombre'],request.json['dni'], request.json['password'] )    
+    content = model.create_usuario(request.json['nombre'],request.json['dni'], 
+              request.json['password'], request.json['path_foto'], 
+              request.json['vector'] )    
     return jsonify(content)
 
 @usuario_blueprint.route('/usuario', methods=['DELETE'])
@@ -27,7 +29,18 @@ def delete_usuario():
 def usuario():
     return jsonify(model.get_usuario(int(request.json['usuario_id'])))
 
-@usuario_blueprint.route('/usuarios', methods=['POST'])
+@usuario_blueprint.route('/usuarios', methods=['GET'])
 @cross_origin()
 def usuarios():
     return jsonify(model.get_usuarios())
+
+@usuario_blueprint.route('/update_usuario', methods=['PATCH'])
+@cross_origin()
+def update_usuario():
+    content = model.update_usuario(request.json['usuario_id'],request.json['dni'],
+              request.json['nombre'], request.json['password'] , request.json['path_foto'], 
+              request.json['vector'])    
+
+    return jsonify(content)
+
+ 

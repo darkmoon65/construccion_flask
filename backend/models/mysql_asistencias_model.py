@@ -1,28 +1,22 @@
 from backend.models.mysql_connection_pool import MySQLPool
 
-class UsuariosModel:
+class AsistenciasModel:
     def __init__(self):        
         self.mysql_pool = MySQLPool()
 
-    def get_usuario(self, usuario_id):    
+    def get_asistencia(self, usuario_id):    
         params = {'usuario_id' : usuario_id}      
-        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI, 
-                                        U.path_foto, U.vector from usuarios U
+        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI from usuarios U
                                         where U.id = %(usuario_id)s""", params)                
         data = []
         content = {}
         for result in rv:
-            content = {'usuario_id': result[0], 
-                       'nombre_usuario': result[1], 
-                       'dni_usuario': result[2],
-                       'ruta_foto': result[3],
-                       'vector': result[4]
-                       }
+            content = {'usuario_id': result[0], 'nombre_usuario': result[1], 'dni_usuario': result[2]}
             data.append(content)
             content = {}
         return data
 
-    def get_usuarios(self):  
+    def get_asistencias(self):  
         rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.DNI, 
                                         U.path_foto, U.vector from usuarios U""")  
         data = []
@@ -38,11 +32,7 @@ class UsuariosModel:
             content = {}
         return data
 
-    def create_usuario(self, nombre, dni, password, file, vector):    
-
-        ## Guardando imagen server
-        route = "img/" + file.filename 
-        file.save(route)
+    def create_asistencia(self, nombre, dni, password, file, vector):    
 
         data = {
             'nombre' : nombre,
@@ -58,7 +48,7 @@ class UsuariosModel:
         data['id'] = cursor.lastrowid
         return data
 
-    def delete_usuario(self, usuario_id):    
+    def delete_asistencia(self, usuario_id):    
         params = {'usuario_id' : usuario_id}      
         query = """delete from usuarios where id = %(usuario_id)s """    
         self.mysql_pool.execute(query, params, commit=True)   
@@ -68,7 +58,7 @@ class UsuariosModel:
 
 
 
-    def update_usuario(self, usuario_id, dni, nombre, password, path_foto, vector ):    
+    def update_asistencia(self, usuario_id, dni, nombre, password, path_foto, vector ):    
         params = {'usuario_id' : usuario_id,
                 'nombre' : nombre,
                 'DNI' : dni,
@@ -89,4 +79,4 @@ class UsuariosModel:
         return data
  
 if __name__ == "__main__":    
-    tm = UsuariosModel()
+    tm = AsistenciasModel()

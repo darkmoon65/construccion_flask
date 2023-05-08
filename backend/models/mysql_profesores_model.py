@@ -19,7 +19,7 @@ class ProfesoresModel:
 
     def get_profesores(self):  
         rv = self.mysql_pool.execute("""SELECT P.id, U.nombre, U.dni from profesores P 
-                                        inner join usuarios U on P.id_usuario = U.id""")  
+                                        inner join usuarios U on P.usuario_id = U.id""")  
         data = []
         content = {}
         for result in rv:
@@ -32,7 +32,7 @@ class ProfesoresModel:
         data = {
             'usuario_id' : usuario_id,
         }  
-        query = """insert into profesores (id_usuario) 
+        query = """insert into profesores (usuario_id) 
             values (%(usuario_id)s)"""    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 
@@ -47,5 +47,15 @@ class ProfesoresModel:
         data = {'result': 1}
         return data
 
+    def update_profesor(self, usuario_id, profesor_id ):    
+        params = {'usuario_id' : usuario_id,
+                'profesor_id' : profesor_id}      
+        query = """update profesores SET usuario_id = %(usuario_id)s 
+                    where id = %(profesor_id)s """    
+        self.mysql_pool.execute(query, params, commit=True)   
+
+        data = {'result': 1}
+        return data
+ 
 if __name__ == "__main__":    
     tm = ProfesoresModel()

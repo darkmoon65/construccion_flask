@@ -31,3 +31,9 @@ def grupo():
 @cross_origin()
 def grupos():
     return jsonify(model.get_grupos())
+
+@grupo_blueprint.route('/update_grupo', methods=['PATCH'])
+@cross_origin()
+def update_grupo():
+    content = model.update_grupo(request.json['curso_id'],request.json['horario_id'], request.json['categoria'] )    
+    return jsonify(content.update_grupo(int(request.json['grupo_id'])))

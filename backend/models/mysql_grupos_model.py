@@ -49,5 +49,25 @@ class GruposModel:
         data = {'result': 1}
         return data
 
+
+    def update_grupo(self, grupo_id, curso_id, horario_id, categoria):    
+        data = {
+            'grupo_id' : grupo_id,
+            'curso_id' : curso_id,
+            'horario_id' : horario_id,
+            'categoria' : categoria,
+        }  
+        query = """update grupos set 
+            curso_id = %(curso_id)s,
+            horario_id = %(horario_id)s, 
+            categoria = %(categoria)s 
+            where id = %(grupo_id)s """    
+        cursor = self.mysql_pool.execute(query, data, commit=True)   
+
+        data['id'] = cursor.lastrowid
+        return data
+
+
+
 if __name__ == "__main__":    
     tm = GruposModel()

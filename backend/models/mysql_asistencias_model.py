@@ -6,7 +6,7 @@ class AsistenciasModel:
 
     def get_asistencia(self, asistencia_id):    
         params = {'asistencia_id' : asistencia_id}      
-        rv = self.mysql_pool.execute("""SELECT A.id, A.estado, U.sesion_id from asistencias A
+        rv = self.mysql_pool.execute("""SELECT A.id, A.estado, A.sesion_id from asistencias A
                                         where A.id = %(asistencia_id)s""", params)                
         data = []
         content = {}
@@ -17,7 +17,7 @@ class AsistenciasModel:
         return data
 
     def get_asistencias(self):  
-        rv = self.mysql_pool.execute("""SELECT A.id, A.estado, U.sesion_id from asistencias A""")  
+        rv = self.mysql_pool.execute("""SELECT A.id, A.estado, A.sesion_id from asistencias A""")  
         data = []
         content = {}
         for result in rv:
@@ -29,11 +29,11 @@ class AsistenciasModel:
     def create_asistencia(self, estado, sesion_id):    
 
         data = {
-            'estado' : nombre,
-            'sesion_id' : dni
+            'estado' : estado,
+            'sesion_id' : sesion_id
         }
         query = """insert into asistencias (estado, sesion_id) 
-            values (%(estado)s, %(dsesion_idni)s) """    
+            values (%(estado)s, %(sesion_id)s) """    
         cursor = self.mysql_pool.execute(query, data, commit=True)
 
         data['id'] = cursor.lastrowid
@@ -49,8 +49,8 @@ class AsistenciasModel:
 
     def update_asistencia(self, asistencia_id,estado,sesion_id ):    
         data = {
-            'asistencia_id': asistencia_id
-            'estado' : nombre,
+            'asistencia_id': asistencia_id,
+            'estado' : estado,
             'sesion_id' : dni
         }  
         query = """update asistencias set 

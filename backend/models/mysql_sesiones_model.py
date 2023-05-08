@@ -52,7 +52,7 @@ class SesionesModel:
 
     def update_sesion(self,sesion_id, fecha, hora, tema, horario_id , justificacion_id):    
         data = {
-            'sesion_id': sesion_id
+            'sesion_id': sesion_id,
             'fecha' : fecha,
             'hora' : hora,
             'tema' : tema,

@@ -41,26 +41,27 @@ def create_usuario():
     vector2_numerico = np.array(ast.literal_eval(arr2))
 
     dist = np.linalg.norm(vector1_numerico - vector2_numerico)
-    if(dist > 0.40):
-        return jsonify({result: "no coinciden las fotos"})
+    print(dist)
+    if(dist > 0.80):
+        return jsonify({"result": "no coinciden las fotos"})
     else:
-        content = asistenciaModel.create_asistencia("Asistió", request.json['sesion_id']))
-        return jsonify(content)
+        content = asistenciaModel.create_asistencia("Asistió", request.form['sesion_id'])
+        return content
 
 @asistencia_blueprint.route('/asistencia', methods=['DELETE'])
 @cross_origin()
 def delete_asistencia():
-    return jsonify(model.delete_asistencia(int(request.json['usuario_id'])))
+    return jsonify(asistenciaModel.delete_asistencia(int(request.json['usuario_id'])))
 
 @asistencia_blueprint.route('/asistencia', methods=['POST'])
 @cross_origin()
 def asistencia():
-    return jsonify(model.get_asistencia(int(request.json['usuario_id'])))
+    return jsonify(asistenciaModel.get_asistencia(int(request.json['usuario_id'])))
 
 @asistencia_blueprint.route('/asistencias', methods=['GET'])
 @cross_origin()
 def asistencias():
-    return jsonify(model.get_asistencias())
+    return jsonify(asistenciaModel.get_asistencias())
 
 @asistencia_blueprint.route('/update_asistencia', methods=['PATCH'])
 @cross_origin()

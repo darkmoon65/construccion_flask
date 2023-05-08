@@ -41,10 +41,8 @@ def sesions():
 @sesion_blueprint.route('/update_sesion', methods=['PATCH'])
 @cross_origin()
 def update_sesion():
-    content = sesionModel.update_sesion(request.json['sesion_id'], (request.json['fecha'],request.json['hora'], 
-               request.json['tema'],request.json['horario_id'], request.json['horario_id']
-               )   
-
+    content = sesionModel.update_sesion(request.json['sesion_id'], request.json['fecha'],request.json['hora'], 
+                request.json['tema'],request.json['horario_id'], request.json['horario_id'])   
     return jsonify(content)
 
  

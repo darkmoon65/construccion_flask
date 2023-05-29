@@ -38,11 +38,11 @@ class UsuariosModel:
             content = {}
         return data
 
-    def create_usuario(self, nombre, dni, password, file, vector):    
+    def create_usuario(self, nombre, dni, password, foto, vector, nombreimg):    
 
         ## Guardando imagen server
-        route = "img/" + file.filename 
-        file.save(route)
+        route = "img/" + nombreimg
+        foto.save(route)
 
         data = {
             'nombre' : nombre,

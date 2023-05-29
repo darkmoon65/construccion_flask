@@ -13,6 +13,7 @@ from backend.blueprints.asistencias_blueprint import asistencia_blueprint
 from backend.blueprints.horarios_blueprint import horario_blueprint
 from backend.blueprints.justificaciones_blueprint import justificacion_blueprint
 from backend.blueprints.sesiones_blueprint import sesion_blueprint
+from backend.blueprints.img_blueprint import img_blueprint
 
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ app.register_blueprint(asistencia_blueprint)
 app.register_blueprint(horario_blueprint)
 app.register_blueprint(justificacion_blueprint)
 app.register_blueprint(sesion_blueprint)
+app.register_blueprint(img_blueprint)
 
 cors = CORS(app)
 

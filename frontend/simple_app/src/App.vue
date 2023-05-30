@@ -10,7 +10,7 @@
 // import SimpleComponent from './components/SimpleComponent'
 // import DataComponent from './components/DataComponent'
 // import MethodsComponent from './components/MethodsComponent'
-import formComponent from './components/formComponent'
+// import formComponent from './components/formComponent'
 import UserComponent from './components/UserComponent'
 
 export default {
@@ -19,7 +19,6 @@ export default {
     // SimpleComponent,
     // DataComponent,
     // MethodsComponent,
-    formComponent,
     UserComponent
   }
 }

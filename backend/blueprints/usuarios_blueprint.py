@@ -21,11 +21,13 @@ usuario_blueprint = Blueprint('usuario_blueprint', __name__)
 def create_usuario():
 
     copia = request.files['foto']
-    nombreImg = request.files['foto'].filename
-    
+    nombreImg = copia.filename
+    copia.save("img/"+ nombreImg)
+
+    img = open("img/"+ nombreImg, 'rb').read()
     ## Consumiendo API openFace
     url = "http://localhost:81/openfaceAPI"
-    response = requests.post(url, files=dict(file = copia))
+    response = requests.post(url, files=dict(file = img))
     data = response.text
     vector = json.loads(data)
 
@@ -48,13 +50,17 @@ def usuario():
 def usuarios():
     return jsonify(model.get_usuarios())
 
-@usuario_blueprint.route('/update_usuario', methods=['PATCH'])
+@usuario_blueprint.route('/update_usuario', methods=['POST'])
 @cross_origin()
 def update_usuario():
-    content = model.update_usuario(request.json['usuario_id'],request.json['dni'],
-              request.json['nombre'], request.json['password'] , request.json['path_foto'], 
-              request.json['vector'])    
 
+    ## Consumiendo API openFace 
+    url = "http://localhost:81/openfaceAPI"
+    response = requests.post(url, files=dict(file = request.files['foto']))
+    data = response.text
+    vector = json.loads(data)
+
+    content = model.update_usuario(request.form['usuario_id'], request.form['dni'],
+                request.form['nombre'],request.form['password'],request.files['foto'], 
+                str(vector['result']))
     return jsonify(content)
-
- 

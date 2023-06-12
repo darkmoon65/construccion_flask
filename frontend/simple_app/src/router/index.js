@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import DataComponent from '@/components/DataComponent'
 import UserComponent from '@/components/UserComponent'
-import componentePrueba from '@/components/componentePrueba'
+import HomeComponent from '@/components/HomeComponent'
 
 Vue.use(Router)
 
@@ -11,15 +10,23 @@ export default new Router({
   routes: [
     {
       path: '/',
+      component: HomeComponent
+    },
+    {
+      path: '/usuarios',
       component: UserComponent
     },
     {
-      path: '/data',
-      component: DataComponent
+      path: '/justificaciones',
+      component: UserComponent
     },
     {
-      path: '/prueba',
-      component: componentePrueba
+      path: '/horarios',
+      component: UserComponent
+    },
+    {
+      path: '/asistencias',
+      component: UserComponent
     }
   ]
 })

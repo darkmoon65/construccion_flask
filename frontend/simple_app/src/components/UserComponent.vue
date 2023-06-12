@@ -1,62 +1,44 @@
 <template>
 <div>
-    <div class='tasks'>
-    </div>
     <div class="container">
         <div class="row">
           <div style="margin: 10px">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearModal">
-                    Crear
-            </button>
+            <b-button size="sm" @click="crearModal($event.target)" class="mr-2 btn btn-success">
+                Crear
+            </b-button>
           </div>
-            <table class="table">
-                 <thead>
-                    <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Dni</th>
-                    <th scope="col">Foto</th>
-                    <th scope="col">Opciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        <tr v-for='user in users' :key='user.id'>
-                            <td> # </td>
-                            <td> {{user.nombre_usuario}} </td>
-                            <td> {{user.dni_usuario}} </td>
-                            <td> <img v-bind:src="postURL+ '/' + user.ruta_foto"  alt="" style="width: 80px"> </td>
-                            <td>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarModal">
-                                    Editar
-                                </button>
-                            </td>
-                            <td>
-                                <button v-on:click='deleteUser(user.usuario_id)' class="btn btn-danger">Eliminar</button>
-                            </td>
-                        </tr>
-                </tbody>
-            </table>
+            <b-table id="my-table" :items="users" :per-page="perPage" :current-page="currentPage" :fields="fields">
+                <template #cell(opciones)="row">
+                    <b-button @click="editarModal(row.item, $event.target)" class="btn btn-primary">
+                      Editar
+                    </b-button>
+                    <button v-on:click='deleteUser(row.item)' class="btn btn-danger">Eliminar</button>
+                </template>
+            </b-table>
+              <div class="overflow-auto">
+                <b-pagination
+                  v-model="currentPage"
+                  :total-rows="rows"
+                  :per-page="perPage"
+                  aria-controls="my-table"
+                ></b-pagination>
+
+                <p class="mt-3">Pagina actual: {{ currentPage }}</p>
+              </div>
         </div>
 
-<!-- Modal -->
-        <div class="modal fade" id="crearModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Crear </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<!-- Modales -->
+      <b-modal :id="createModal.id" :title="'Crear'" ok-only >
+          <div class="modal-content">
             <div class="modal-body">
                  <form v-on:submit='addUsers'>
                     <div class="input-group mb-3">
                     <label>Nombre</label>
-                    <input type="text" v-model='newUser.nombre' class="form-control" placeholder="Nombre" >
+                    <input type="text" v-model='nuevoUsuario.nombre' class="form-control" placeholder="Nombre" >
                 </div>
                 <div class="input-group mb-3">
-                    <label>Dni</label>
-                    <input type="text" v-model='newUser.dni' class="form-control" placeholder="Dni">
+                    <label> DNI</label>
+                    <input type="text" v-model='nuevoUsuario.dni' class="form-control" placeholder="Ingrese Dni">
                 </div>
                 <div class="input-group mb-3">
                     <label>Foto</label>
@@ -64,37 +46,25 @@
                 </div>
                 <div class="input-group mb-3">
                     <label>Password</label>
-                    <input type="password" v-model='newUser.password' class="form-control" placeholder="Password">
+                    <input type="password" v-model='nuevoUsuario.password' class="form-control" >
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
 
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
-         <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Editar </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+          </div>
+      </b-modal>
+      <b-modal :id="updateModal.id" :title="'Actualizar'" ok-only >
+          <div class="modal-content">
             <div class="modal-body">
                  <form v-on:submit='updateUsers'>
                     <div class="input-group mb-3">
                     <label>Nombre</label>
-                    <input type="text" v-model='newUser.nombre' class="form-control" placeholder="Nombre"  >
+                    <input type="text" v-model='updateUser.nombre' class="form-control" placeholder="Nombre"  >
                 </div>
                 <div class="input-group mb-3">
                     <label>Dni</label>
-                    <input type="text" v-model='newUser.dni' class="form-control" placeholder="Dni">
+                    <input type="text" v-model='updateUser.dni' class="form-control" placeholder="Dni">
                 </div>
                 <div class="input-group mb-3">
                     <label>Foto</label>
@@ -102,18 +72,13 @@
                 </div>
                 <div class="input-group mb-3">
                     <label>Password</label>
-                    <input type="password" v-model='newUser.password' class="form-control" placeholder="Password">
+                    <input type="password" v-model='updateUser.password' class="form-control" placeholder="Password">
                 </div>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
             </div>
-        </div>
-        </div>
+      </b-modal>
     </div>
 </div>
 
@@ -124,40 +89,66 @@ import axios from 'axios'
 export default{
   data () {
     return {
+      fields: ['usuario_id', 'dni_usuario', 'nombre_usuario', 'opciones'],
+      perPage: 5,
+      currentPage: 1,
       users: [],
-      newUser: {},
-      postURL: 'http://127.0.0.1:5000'
+      updateUser: {},
+      nuevoUsuario: {},
+      postURL: 'http://127.0.0.1:5000',
+      updateModal: {
+        id: 'update-modal',
+        title: '',
+        content: ''
+      },
+      createModal: {
+        id: 'create-modal',
+        title: '',
+        content: ''
+      }
 
     }
   },
+  computed: {
+    rows () {
+      return this.users.length
+    }
+  },
   methods: {
-
+    makeToast (variant = null, message) {
+      this.$bvToast.toast(`${message}`, {
+        title: `${variant || 'default'}`,
+        variant: variant,
+        autoHideDelay: 3000,
+        solid: true
+      })
+    },
     updateUsers (e) {
-    // with axios
-
-      e.preventDefault() // cancela el comportamiento por defecto, en este caso evitar que se vuelva a cargar la pagina luego del submit
+      e.preventDefault()
       var configRequest = {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*'
       }
-      console.log(this.newUser)
-      var formData = new FormData()
-      formData.append('foto', this.newUser.foto)
-      formData.append('nombre', this.newUser.nombre)
-      formData.append('dni', this.newUser.dni)
-      formData.append('password', this.newUser.password)
-
-      axios.post(this.postURL + '/update_usuario', {formData}, {configRequest}).then((res) => {
-        console.log(res.data)
-        this.users = res.data
+      let formUpdate = new FormData()
+      formUpdate.append('foto', this.updateUser.foto)
+      formUpdate.append('nombre', this.updateUser.nombre)
+      formUpdate.append('dni', this.updateUser.dni)
+      formUpdate.append('password', this.updateUser.password)
+      formUpdate.append('usuario_id', this.updateUser.usuario_id)
+      axios.post(this.postURL + '/update_usuario', formUpdate, {configRequest}).then((res) => {
+        this.makeToast('success', 'Usuario actualizado')
+        this.updateUser = {}
+        this.refresh()
+        this.$root.$emit('bv::hide::modal', this.updateModal.id)
       })
-        .catch((error) => {
-          console.log(error)
+        .catch(() => {
+          this.makeToast('danger', 'Hubo un error en el backend')
         })
     },
     onFileChange (e) {
       var files = e.target.files[0]
-      this.newUser.foto = files
+      this.nuevoUsuario.foto = files
+      this.updateUser.foto = files
     },
     addUsers (e) {
       e.preventDefault() // cancela el comportamiento por defecto, en este caso evitar que se vuelva a cargar la pagina luego del submit
@@ -165,20 +156,22 @@ export default{
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*'
       }
-      console.log(this.newUser)
       var formData = new FormData()
-      formData.append('foto', this.newUser.foto)
-      formData.append('nombre', this.newUser.nombre)
-      formData.append('dni', this.newUser.dni)
-      formData.append('password', this.newUser.password)
+      formData.append('foto', this.nuevoUsuario.foto)
+      formData.append('nombre', this.nuevoUsuario.nombre)
+      formData.append('dni', this.nuevoUsuario.dni)
+      formData.append('password', this.nuevoUsuario.password)
 
       axios.post(this.postURL + '/usuario_create', formData, { configRequest })
         .then(res => {
-          console.log(res.data)
-          this.users.push(res.data)
+          this.makeToast('success', 'Usuario creado')
+          this.nuevoUsuario = {}
+          this.refresh()
+          this.$root.$emit('bv::hide::modal', this.createModal.id)
         })
         .catch((error) => {
           console.log(error)
+          this.makeToast('danger', 'Hubo un error en el backend')
         })
     },
     deleteUser (user) {
@@ -186,16 +179,35 @@ export default{
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
-      console.log(user)
-      axios.post(this.postURL + '/usuario_delete', {usuario_id: user}, { configRequest })
+      axios.post(this.postURL + '/usuario_delete', {usuario_id: user.usuario_id}, { configRequest })
         .then(res => {
           this.users.splice(this.users.indexOf(user), 1)
           console.log(res.data)
+          this.makeToast('success', 'Usuario eliminado')
         })
+        .catch((error) => {
+          console.log(error)
+          this.makeToast('danger', 'Hubo un error en el backend')
+        })
+    },
+    editarModal (item, button) {
+      this.updateUser.usuario_id = item.usuario_id
+      this.$root.$emit('bv::show::modal', this.updateModal.id, button)
+    },
+    crearModal (button) {
+      this.$root.$emit('bv::show::modal', this.createModal.id, button)
+    },
+    refresh () {
+    // with axios
+      axios.get(this.postURL + '/usuarios').then((res) => {
+        console.log(res.data)
+        this.users = res.data
+      })
         .catch((error) => {
           console.log(error)
         })
     }
+
   },
   created () {
     // with axios
@@ -207,7 +219,6 @@ export default{
         console.log(error)
       })
   }
-
 }
 </script>
 

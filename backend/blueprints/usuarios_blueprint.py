@@ -26,7 +26,7 @@ def create_usuario():
               request.form['password'],request.files['foto'], str(vector['result']))
     return jsonify(content)
 
-@usuario_blueprint.route('/usuario', methods=['DELETE'])
+@usuario_blueprint.route('/usuario_delete', methods=['POST'])
 @cross_origin()
 def delete_usuario():
     return jsonify(model.delete_usuario(int(request.json['usuario_id'])))
@@ -41,13 +41,19 @@ def usuario():
 def usuarios():
     return jsonify(model.get_usuarios())
 
-@usuario_blueprint.route('/update_usuario', methods=['PATCH'])
+@usuario_blueprint.route('/update_usuario', methods=['POST'])
 @cross_origin()
 def update_usuario():
-    content = model.update_usuario(request.json['usuario_id'],request.json['dni'],
-              request.json['nombre'], request.json['password'] , request.json['path_foto'], 
-              request.json['vector'])    
 
+    ## Consumiendo API openFace 
+    url = "http://localhost:81/openfaceAPI"
+    response = requests.post(url, files=dict(file = request.files['foto']))
+    data = response.text
+    vector = json.loads(data)
+
+    content = model.update_usuario(request.form['usuario_id'], request.form['dni'],
+                request.form['nombre'],request.form['password'],request.files['foto'], 
+                str(vector['result']))
     return jsonify(content)
 
  

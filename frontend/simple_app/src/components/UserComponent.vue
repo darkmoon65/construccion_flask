@@ -4,9 +4,11 @@
     </div>
     <div class="container">
         <div class="row">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#crearModal">
+          <div style="margin: 10px">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#crearModal">
                     Crear
             </button>
+          </div>
             <table class="table">
                  <thead>
                     <tr>
@@ -172,6 +174,7 @@ export default{
 
       axios.post(this.postURL + '/usuario_create', formData, { configRequest })
         .then(res => {
+          console.log(res.data)
           this.users.push(res.data)
         })
         .catch((error) => {
@@ -208,8 +211,8 @@ export default{
 }
 </script>
 
-    <style>
-        .tasks{
-            background-color: #cccccc;
-        }
-    </style>
+<style>
+      .tasks{
+          background-color: #cccccc;
+      }
+</style>

@@ -27,12 +27,12 @@ def delete_alumno():
 def alumno():
     return jsonify(model.get_alumno(int(request.json['alumno_id'])))
 
-@alumno_blueprint.route('/alumnos', methods=['POST'])
+@alumno_blueprint.route('/alumnos', methods=['GET'])
 @cross_origin()
 def alumnos():
     return jsonify(model.get_alumnos())
 
-@alumno_blueprint.route('/alumno_update', methods=['PATCH'])
+@alumno_blueprint.route('/alumno_update', methods=['POST'])
 @cross_origin()
 def alumno_update():
     content = model.alumno_update(request.json['usuario_id'])    

@@ -6,7 +6,7 @@ class AlumnosModel:
 
     def get_alumno(self, alumno_id):    
         params = {'alumno_id' : alumno_id}      
-        rv = self.mysql_pool.execute("""SELECT A.id_alumno, U.nombre, U.DNI from alumnos A 
+        rv = self.mysql_pool.execute("""SELECT A.id, U.nombre, U.DNI from alumnos A 
                                         inner join usuarios U on A.usuario_id = U.id
                                         where A.id = %(alumno_id)s""", params)                
         data = []
@@ -18,8 +18,8 @@ class AlumnosModel:
         return data
 
     def get_alumnos(self):  
-        rv = self.mysql_pool.execute("""SELECT A.id_alumno, U.nombre, U.DNI from alumnos A 
-                                        inner join usuarios U on A.id_usuario = U.id""")  
+        rv = self.mysql_pool.execute("""SELECT A.id, U.nombre, U.DNI from alumnos A 
+                                        inner join usuarios U on A.usuario_id = U.id""")  
         data = []
         content = {}
         for result in rv:
@@ -32,7 +32,7 @@ class AlumnosModel:
         data = {
             'usuario_id' : usuario_id,
         }  
-        query = """insert into alumnos (id_usuario) 
+        query = """insert into alumnos (usuario_id) 
             values (%(usuario_id)s)"""    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 

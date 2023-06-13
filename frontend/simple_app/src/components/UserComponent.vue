@@ -4,7 +4,7 @@
         <div class="row">
           <div style="margin: 10px">
             <b-button size="sm" @click="crearModal($event.target)" class="mr-2 btn btn-success">
-                Crear
+                Crear usuario
             </b-button>
           </div>
             <b-table id="my-table" :items="users" :per-page="perPage" :current-page="currentPage" :fields="fields">
@@ -28,27 +28,48 @@
         </div>
 
 <!-- Modales -->
-      <b-modal :id="createModal.id" :title="'Crear'" ok-only >
+      <b-modal :id="createModal.id" :title="'Crear usuarios'" ok-only >
           <div class="modal-content">
             <div class="modal-body">
                  <form v-on:submit='addUsers'>
-                    <div class="input-group mb-3">
-                    <label>Nombre</label>
-                    <input type="text" v-model='nuevoUsuario.nombre' class="form-control" placeholder="Nombre" >
-                </div>
-                <div class="input-group mb-3">
-                    <label> DNI</label>
-                    <input type="text" v-model='nuevoUsuario.dni' class="form-control" placeholder="Ingrese Dni">
-                </div>
-                <div class="input-group mb-3">
-                    <label>Foto</label>
-                    <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
-                </div>
-                <div class="input-group mb-3">
-                    <label>Password</label>
-                    <input type="password" v-model='nuevoUsuario.password' class="form-control" >
-                </div>
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                      <div class="row p-2">
+                          <div class="col-3">
+                         <label>Nombre</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="text" v-model='nuevoUsuario.nombre' class="form-control" placeholder="Nombre" >
+                      </div>
+                      </div>
+                  <div class="row p-2">
+                          <div class="col-3">
+                         <label> DNI</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="text" v-model='nuevoUsuario.dni' class="form-control" placeholder="Ingrese Dni">
+                      </div>
+                      </div>
+
+                  <div class="row p-2">
+
+                          <div class="col-3">
+                            <label>Foto</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
+                      </div>
+                      </div>
+
+                  <div class="row p-2">
+                          <div class="col-3">
+                          <label>Password</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="password" v-model='nuevoUsuario.password' class="form-control" >
+                      </div>
+                      </div>
+                  <div style="align-items:center; justify-content: center ; display:flex" class="p-4">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                  </div>
                 </form>
 
             </div>
@@ -57,24 +78,47 @@
       <b-modal :id="updateModal.id" :title="'Actualizar'" ok-only >
           <div class="modal-content">
             <div class="modal-body">
-                 <form v-on:submit='updateUsers'>
-                    <div class="input-group mb-3">
-                    <label>Nombre</label>
-                    <input type="text" v-model='updateUser.nombre' class="form-control" placeholder="Nombre"  >
-                </div>
-                <div class="input-group mb-3">
-                    <label>Dni</label>
-                    <input type="text" v-model='updateUser.dni' class="form-control" placeholder="Dni">
-                </div>
-                <div class="input-group mb-3">
-                    <label>Foto</label>
-                    <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
-                </div>
-                <div class="input-group mb-3">
-                    <label>Password</label>
-                    <input type="password" v-model='updateUser.password' class="form-control" placeholder="Password">
-                </div>
-                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                               <form v-on:submit='updateUsers'>
+                      <div class="row p-2">
+                          <div class="col-3">
+                         <label>Nombre</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="text" v-model='updateUser.nombre' class="form-control" placeholder="Nombre"  >
+                      </div>
+                      </div>
+                  <div class="row p-2">
+                          <div class="col-3">
+                         <label> DNI</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="text" v-model='updateUser.dni' class="form-control" placeholder="Dni">
+                      </div>
+                      </div>
+
+                  <div class="row p-2">
+
+                          <div class="col-3">
+                            <label>Foto</label>
+                      </div>
+                      <div class="col-9">
+                        <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
+                      </div>
+                      </div>
+                  <div class="row p-2" style="align-items:center; justify-content: center ; display:flex">
+                     <img v-bind:src="updateUser.foto_ruta" width="100" height="100">
+                  </div>
+                  <div class="row p-2">
+                          <div class="col-3">
+                          <label>Password</label>
+                      </div>
+                      <div class="col-9">
+                          <input type="password" v-model='updateUser.password' class="form-control" placeholder="Password">
+                      </div>
+                      </div>
+                  <div style="align-items:center; justify-content: center ; display:flex" class="p-4">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                  </div>
                 </form>
             </div>
             </div>
@@ -86,6 +130,7 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 export default{
   data () {
     return {
@@ -125,6 +170,11 @@ export default{
     },
     updateUsers (e) {
       e.preventDefault()
+      if (this.updateUser.dni.length !== 8) {
+        console.log('no es 8 digitos')
+        this.makeToast('danger', 'EL dni debe ser de 8 digitos')
+        return
+      }
       var configRequest = {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*'
@@ -149,9 +199,15 @@ export default{
       var files = e.target.files[0]
       this.nuevoUsuario.foto = files
       this.updateUser.foto = files
+      Vue.set(this.updateUser, 'foto_ruta', window.URL.createObjectURL(files))
     },
     addUsers (e) {
       e.preventDefault() // cancela el comportamiento por defecto, en este caso evitar que se vuelva a cargar la pagina luego del submit
+      if (this.nuevoUsuario.dni.length !== 8) {
+        console.log('no es 8 digitos')
+        this.makeToast('danger', 'EL dni debe ser de 8 digitos')
+        return
+      }
       var configRequest = {
         'Content-Type': 'multipart/form-data',
         'Access-Control-Allow-Origin': '*'
@@ -191,7 +247,11 @@ export default{
         })
     },
     editarModal (item, button) {
-      this.updateUser.usuario_id = item.usuario_id
+      Vue.set(this.updateUser, 'dni', item.dni_usuario)
+      Vue.set(this.updateUser, 'nombre', item.nombre_usuario)
+      Vue.set(this.updateUser, 'foto_ruta', 'http://localhost:5000/' + item.ruta_foto)
+      Vue.set(this.updateUser, 'usuario_id', item.usuario_id)
+
       this.$root.$emit('bv::show::modal', this.updateModal.id, button)
     },
     crearModal (button) {

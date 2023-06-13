@@ -69,8 +69,8 @@ class UsuariosModel:
 
 
     def update_usuario(self, usuario_id, dni, nombre, password, path_foto, vector ):    
-        route = "img/" + path_foto.filename 
-        path_foto.save(route)
+        route = "img/" + path_foto
+        ##path_foto.save(route)
 
         params = {'usuario_id' : usuario_id,
                 'nombre' : nombre,

@@ -53,14 +53,27 @@ def usuarios():
 @usuario_blueprint.route('/update_usuario', methods=['POST'])
 @cross_origin()
 def update_usuario():
+    if( 'foto' in request.files ):
+        copia = request.files['foto']
+        nombreImg = copia.filename
+        copia.save("img/"+ nombreImg)
 
+        img = open("img/"+ nombreImg, 'rb').read()
+    else:    
+        url = "http://localhost:5000/usuario"
+        us = requests.post(url, json={'usuario_id' : request.form['usuario_id']})
+        user_found = us.json()
+
+        img = open(user_found[0]['ruta_foto'], 'rb').read()
+        nombreImg = user_found[0]['ruta_foto'].split('/')[1]
+    
     ## Consumiendo API openFace 
     url = "http://localhost:81/openfaceAPI"
-    response = requests.post(url, files=dict(file = request.files['foto']))
+    response = requests.post(url, files=dict(file = img))
     data = response.text
     vector = json.loads(data)
 
     content = model.update_usuario(request.form['usuario_id'], request.form['dni'],
-                request.form['nombre'],request.form['password'],request.files['foto'], 
+                request.form['nombre'],request.form['password'],nombreImg, 
                 str(vector['result']))
     return jsonify(content)

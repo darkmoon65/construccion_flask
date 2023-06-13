@@ -59,6 +59,14 @@
                         </router-link>
                     </li>
                     <li class="nav-item">
+                        <router-link to='/alumnos' class="nav-link">
+                            <div class="row align-items-md-center">
+                                <i class="Tiny material-icons col-md-2" aria-hidden="true">group</i>
+                                <span class="col-md-10">Alumnos</span>
+                            </div>
+                        </router-link>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#">
                             <div class="row align-items-center">
                                 <i class="Tiny material-icons col-md-2" aria-hidden="true">exit_to_app</i>

@@ -14,7 +14,7 @@
                             <img src="./assets/perfil.png" style="height:70px; border-radius: 40px;" />
                             <label class="nav-link">Usuario 1</label>
                         </div>
-                        
+
                         <hr />
                     </li>
 
@@ -66,10 +66,10 @@
                             </div>
                         </a>
                     </li>
-                    
+
             </ul>
         </div>
-    </div> 
+    </div>
     <router-view id="main" style="margin-left: 0%; display: block ; margin-top: 5%; overflow-y: auto;"/>
   </div>
 
@@ -83,26 +83,24 @@ export default {
     return {
       estado: true
     }
-  
   },
 
   methods: {
-    change() {
-           if(this.estado == true){
-            document.getElementById("main").style.marginLeft = "20%";
-            document.getElementById("main").style.marginTop = "5%";
-            document.getElementById("main").style.width = "100%";
-            document.getElementById("menuId").style.width = "20%";
-            document.getElementById("menuId").style.display = "block";  
-            this.estado = false;
-           }
-           else{
-            document.getElementById("main").style.marginLeft = "0%";
-            document.getElementById("main").style.width = "100%";
-            document.getElementById("menuId").style.display = "none";
-            this.estado = true;
-           }
+    change () {
+      if (this.estado === true) {
+        document.getElementById('main').style.marginLeft = '20%'
+        document.getElementById('main').style.marginTop = '5%'
+        document.getElementById('main').style.width = '100%'
+        document.getElementById('menuId').style.width = '20%'
+        document.getElementById('menuId').style.display = 'block'
+        this.estado = false
+      } else {
+        document.getElementById('main').style.marginLeft = '0%'
+        document.getElementById('main').style.width = '100%'
+        document.getElementById('menuId').style.display = 'none'
+        this.estado = true
       }
+    }
   }
 }
 </script>
@@ -124,26 +122,24 @@ export default {
             border-radius: 10px;
         }
         #menuId::-webkit-scrollbar {
-            width: 8px;     
-            height: 100%;    
+            width: 8px;
+            height: 100%;
         }
-        
+
         #menuId::-webkit-scrollbar-thumb {
             background: rgb(61, 61, 61);
             border-radius: 4px;
         }
-    
-       
+
         #menuId::-webkit-scrollbar-thumb:hover {
             background: #1b1a1a;
             box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
         }
-    
-        
+
         #menuId::-webkit-scrollbar-thumb:active {
             background-color: #1b1136;
         }
-    
+
         a:hover {
             background-color: #ffffff25;
             color: white;
@@ -153,55 +149,55 @@ export default {
             color: white;
             opacity: 0.8;
         }
-        body { 
-            background: #f1f5f9; 
-        } 
-        
-        #cal { 
-            
-            margin:50px auto; 
-            font: 13px/1.5 "Helvetica Neue", Helvatica, Arial, san-serif; 
-            display:table; 
+        body {
+            background: #f1f5f9;
         }
 
-        #cal table { 
-            background:#fff; 
-            border-collapse:collapse; 
-        } 
-        #cal td { 
-            color:#2b2b2b; 
-            width:30px; 
-            height:30px; 
-            line-height:30px; 
-            text-align:center; 
-            border:1px solid #e6e6e6; 
-            cursor:default; 
-        } 
-        #cal #days td { 
-            height:26px; 
+        #cal {
+
+            margin:50px auto;
+            font: 13px/1.5 "Helvetica Neue", Helvatica, Arial, san-serif;
+            display:table;
+        }
+
+        #cal table {
+            background:#fff;
+            border-collapse:collapse;
+        }
+        #cal td {
+            color:#2b2b2b;
+            width:30px;
+            height:30px;
+            line-height:30px;
+            text-align:center;
+            border:1px solid #e6e6e6;
+            cursor:default;
+        }
+        #cal #days td {
+            height:26px;
             line-height: 26px;
-            font-size:90%; 
-            color:#9e9e9e; 
-        } 
-        #cal #days td:not(:last-child) { 
-            border-right:1px solid #fff; 
+            font-size:90%;
+            color:#9e9e9e;
         }
-        #cal #cal-frame .nil{ 
-            background:#fa6161; 
+        #cal #days td:not(:last-child) {
+            border-right:1px solid #fff;
         }
-        #cal #cal-frame .hecho{ 
-            background:#ffb25a; 
+        #cal #cal-frame .nil{
+            background:#fa6161;
         }
-        #cal #cal-frame .actual{ 
-            background:#60ff38; 
+        #cal #cal-frame .hecho{
+            background:#ffb25a;
         }
-        #cal #cal-frame .semana{ 
-            width: 90px; 
+        #cal #cal-frame .actual{
+            background:#60ff38;
         }
-        #cal #days .nilSemana{ 
-            width: 90px; 
+        #cal #cal-frame .semana{
+            width: 90px;
+        }
+        #cal #days .nilSemana{
+            width: 90px;
             border-top: 0px;
             border-left: 0px;
-            border-right: 1px solid #e6e6e6; 
+            border-right: 1px solid #e6e6e6;
         }
 </style>

@@ -86,11 +86,12 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 export default{
   data () {
     return {
       fields: ['usuario_id', 'dni_usuario', 'nombre_usuario', 'opciones'],
-      perPage: 5,
+      perPage: 2,
       currentPage: 1,
       users: [],
       updateUser: {},
@@ -191,7 +192,9 @@ export default{
         })
     },
     editarModal (item, button) {
-      this.updateUser.usuario_id = item.usuario_id
+      Vue.set(this.updateUser, 'dni', item.dni_usuario)
+      Vue.set(this.updateUser, 'nombre', item.nombre_usuario)
+      Vue.set(this.updateUser, 'foto', item.ruta_foto)
       this.$root.$emit('bv::show::modal', this.updateModal.id, button)
     },
     crearModal (button) {

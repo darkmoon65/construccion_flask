@@ -8,7 +8,6 @@ from flask import send_file
 from flask_cors import CORS, cross_origin 
 import io
 import numpy as np
-from matplotlib import pylab as plt
 
 
 img_blueprint = Blueprint('img_blueprint', __name__)

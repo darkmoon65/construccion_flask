@@ -8,7 +8,6 @@ from flask_cors import CORS, cross_origin
 import requests
 import copy
 import sys
-import cv2
 import numpy as np
 import os
 from backend.models.mysql_usuarios_model import UsuariosModel

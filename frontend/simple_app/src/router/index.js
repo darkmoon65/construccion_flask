@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import UserComponent from '@/components/UserComponent'
 import HomeComponent from '@/components/HomeComponent'
 import AlumnoComponent from '@/components/AlumnoComponent'
+import HorarioComponent from '@/components/HorarioComponent'
 
 Vue.use(Router)
 
@@ -23,7 +24,7 @@ export default new Router({
     },
     {
       path: '/horarios',
-      component: UserComponent
+      component: HorarioComponent
     },
     {
       path: '/asistencias',

@@ -42,17 +42,17 @@ class UsuariosModel:
 
         ## Guardando imagen server
         route = "img/" + nombreimg
-        foto.save(route)
+        #foto.save(route)
 
         data = {
-            'nombre' : nombre,
-            'dni' : dni,
+            'nombre_usuario' : nombre,
+            'dni_usuario' : dni,
             'password' : password,
-            'path_foto' : route,
+            'ruta_foto' : route,
             'vector': vector
         }
         query = """insert into usuarios (nombre, DNI, password, path_foto, vector) 
-            values (%(nombre)s, %(dni)s, %(password)s, %(path_foto)s, %(vector)s) """    
+            values (%(nombre_usuario)s, %(dni_usuario)s, %(password)s, %(ruta_foto)s, %(vector)s) """    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 
         data['id'] = cursor.lastrowid
@@ -69,11 +69,14 @@ class UsuariosModel:
 
 
     def update_usuario(self, usuario_id, dni, nombre, password, path_foto, vector ):    
+        route = "img/" + path_foto
+        ##path_foto.save(route)
+
         params = {'usuario_id' : usuario_id,
                 'nombre' : nombre,
                 'DNI' : dni,
                 'password' : password,
-                'path_foto' : path_foto,
+                'path_foto' : route,
                 'vector' : vector,
         }      
         query = """update usuarios set 

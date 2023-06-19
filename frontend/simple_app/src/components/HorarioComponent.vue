@@ -7,7 +7,7 @@
         Crear
     </b-button>
     </div>
-    <b-table id="my-table" :items="horario" :per-page="perPage" :current-page="currentPage" :fields="fields">
+    <b-table id="my-table" :items="horarios" :per-page="perPage" :current-page="currentPage" :fields="fields">
     <template #cell(opciones)="row">
     <b-button @click="editarModal(row.item, $event.target)" class="btn btn-primary">
         Editar
@@ -30,53 +30,44 @@
     <!-- Modales -->
     <b-modal :id="createModal.id" :title="'Crear'" ok-only >
     <div class="modal-content">
-    <div class="modal-body">
-    <form v-on:submit='addHorarios'>
-    <div class="input-group mb-3">
-    <label>Fecha de Inicio </label>
-    <input type="text" v-model='nuevoUsuario.nombre' class="form-control" placeholder="Nombre" >
-    </div>
-    <div class="input-group mb-3">
-    <label> DNI</label>
-    <input type="text" v-model='nuevoUsuario.dni' class="form-control" placeholder="Ingrese Dni">
-    </div>
-    <div class="input-group mb-3">
-    <label>Foto</label>
-    <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
-    </div>
-    <div class="input-group mb-3">
-    <label>Password</label>
-    <input type="password" v-model='nuevoUsuario.password' class="form-control" >
-    </div>
+      <div class="modal-body">
+      <form v-on:submit='addHorario'>
+        <div class="input-group mb-3">
+        <label>Día</label>
+        <input type="date" v-model='nuevoHorario.dia' class="form-control" placeholder="día" >
+        </div>
+        <div class="input-group mb-3">
+        <label> Hora Inicio</label>
+        <input type="text" v-model='nuevoHorario.hora_inicio' class="form-control" placeholder="Ingrese hora inicio">
+        </div>
+        <div>
+      <label> Hora fin</label>
+      <input type="text" v-model='nuevoHorario.hora_fin' class="form-control" placeholder="Ingrese hora inicio">
+      </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
     </form>
-
-    </div>
+  </div>
     </div>
     </b-modal>
     <b-modal :id="updateModal.id" :title="'Actualizar'" ok-only >
     <div class="modal-content">
-    <div class="modal-body">
-    <form v-on:submit='updateHorarios'>
-    <div class="input-group mb-3">
-    <label>Nombre</label>
-    <input type="text" v-model='updateHorario.nombre' class="form-control" placeholder="Nombre" >
-    </div>
-    <div class="input-group mb-3">
-    <label>Dni</label>
-    <input type="text" v-model='updateHorario.dni' class="form-control" placeholder="Dni">
-    </div>
-    <div class="input-group mb-3">
-    <label>Foto</label>
-    <input type="file" v-on:change="onFileChange" class="form-control" placeholder="Foto">
-    </div>
-    <div class="input-group mb-3">
-    <label>Password</label>
-    <input type="password" v-model='updateHorario.password' class="form-control" placeholder="Password">
-    </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    </form>
-    </div>
+      <div class="modal-body">
+      <form v-on:submit='updateHorarios'>
+        <div class="input-group mb-3">
+          <label>Día</label>
+          <input type="date" v-model='updateHorario.dia' class="form-control" placeholder="Ingrese día" >
+        </div>
+        <div class="input-group mb-3">
+          <label>Hora Inicio</label>
+          <input type="text" v-model='updateHorario.hora_inicio' class="form-control" placeholder="ingrese hora de inicio">
+        </div>
+        <div class="input-group mb-3">
+          <label>Hora Fin</label>
+          <input type="text" v-model='updateHorario.hora_fin' class="form-control" placeholder="ingrese hora final">
+        </div>
+      <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+      </form>
+      </div>
     </div>
     </b-modal>
     </div>
@@ -89,12 +80,12 @@ import axios from 'axios'
 export default{
   data () {
     return {
-      fields: ['usuario_id', 'dni_usuario', 'nombre_usuario', 'opciones'],
+      fields: ['horario_id', 'dia', 'hora_inicio', 'hora_fin', 'opciones'],
       perPage: 5,
       currentPage: 1,
       horarios: [],
       updateHorario: {},
-      nuevoUsuario: {},
+      nuevoHorario: {},
       postURL: 'http://127.0.0.1:5000',
       updateModal: {
         id: 'update-modal',
@@ -126,17 +117,12 @@ export default{
     updateHorarios (e) {
       e.preventDefault()
       var configRequest = {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'aplication/json',
         'Access-Control-Allow-Origin': '*'
       }
-      let formUpdate = new FormData()
-      formUpdate.append('foto', this.updateHorario.foto)
-      formUpdate.append('nombre', this.updateHorario.nombre)
-      formUpdate.append('dni', this.updateHorario.dni)
-      formUpdate.append('password', this.updateHorario.password)
-      formUpdate.append('usuario_id', this.updateHorario.usuario_id)
-      axios.post(this.postURL + '/update_usuario', formUpdate, {configRequest}).then((res) => {
-        this.makeToast('success', 'Usuario actualizado')
+
+      axios.post(this.postURL + '/update_horario', this.updateHorario, {configRequest}).then((res) => {
+        this.makeToast('success', 'Horario actualizado')
         this.updateHorario = {}
         this.refresh()
         this.$root.$emit('bv::hide::modal', this.updateModal.id)
@@ -145,24 +131,14 @@ export default{
           this.makeToast('danger', 'Hubo un error en el backend')
         })
     },
-    onFileChange (e) {
-      var files = e.target.files[0]
-      this.nuevoUsuario.foto = files
-      this.updateHorario.foto = files
-    },
     addHorario (e) {
       e.preventDefault() // cancela el comportamiento por defecto, en este caso evitar que se vuelva a cargar la pagina luego del submit
       var configRequest = {
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'aplication/json',
         'Access-Control-Allow-Origin': '*'
       }
-      var formData = new FormData()
-      formData.append('foto', this.nuevoUsuario.foto)
-      formData.append('nombre', this.nuevoUsuario.nombre)
-      formData.append('dni', this.nuevoUsuario.dni)
-      formData.append('password', this.nuevoUsuario.password)
 
-      axios.post(this.postURL + '/horario_create', formData, { configRequest })
+      axios.post(this.postURL + '/horario_create', this.nuevoHorario, { configRequest })
         .then(res => {
           this.makeToast('success', 'Horario creado')
           this.nuevoHorario = {}
@@ -199,9 +175,9 @@ export default{
     },
     refresh () {
     // with axios
-      axios.get(this.postURL + '/horario').then((res) => {
+      axios.get(this.postURL + '/horarios').then((res) => {
         console.log(res.data)
-        this.horario = res.data
+        this.horarios = res.data
       })
         .catch((error) => {
           console.log(error)
@@ -211,9 +187,9 @@ export default{
   },
   created () {
     // with axios
-    axios.get(this.postURL + '/horario').then((res) => {
+    axios.get(this.postURL + '/horarios').then((res) => {
       console.log(res.data)
-      this.horario = res.data
+      this.horarios = res.data
     })
       .catch((error) => {
         console.log(error)

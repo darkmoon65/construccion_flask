@@ -17,7 +17,7 @@ def create_alumno():
     content = model.create_alumno(request.json['usuario_id'])    
     return jsonify(content)
 
-@alumno_blueprint.route('/alumno', methods=['DELETE'])
+@alumno_blueprint.route('/alumno_delete', methods=['POST'])
 @cross_origin()
 def delete_alumno():
     return jsonify(model.delete_alumno(int(request.json['alumno_id'])))

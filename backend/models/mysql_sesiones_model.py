@@ -26,17 +26,15 @@ class SesionesModel:
             content = {}
         return data
 
-    def create_sesion(self, fecha, hora, tema, horario_id , justificacion_id):    
+    def create_sesion(self, tema, horario_id , justificacion_id):    
 
         data = {
-            'fecha' : fecha,
-            'hora' : hora,
             'tema' : tema,
             'horario_id' : horario_id,
             'justificacion_id' : justificacion_id
         }
-        query = """insert into sesiones (fecha, hora, tema, horario_id, justificacion_id) 
-            values (%(fecha)s, %(hora)s, %(tema)s, %(horario_id)s, %(justificacion_id)s) """    
+        query = """insert into sesiones (tema, horario_id, justificacion_id) 
+            values (%(tema)s, %(horario_id)s, %(justificacion_id)s) """    
         cursor = self.mysql_pool.execute(query, data, commit=True)
 
         data['id'] = cursor.lastrowid
@@ -70,6 +68,6 @@ class SesionesModel:
 
         data = {'result': 1}
         return data
- 
+
 if __name__ == "__main__":    
     tm = SesionesModel()

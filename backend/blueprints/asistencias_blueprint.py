@@ -8,6 +8,8 @@ from flask_cors import CORS, cross_origin
 import requests
 import numpy as np
 import ast, re
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 np.set_printoptions(precision=2)
 
 from backend.models.mysql_asistencias_model import AsistenciasModel
@@ -28,14 +30,18 @@ def create_usuario():
     vector_imagen_enviada = json.loads(data)['result']
 
     ##Consultando imagen guardada
-    usuario = usuarioModel.get_usuario(int(request.form['usuario_id']))
-    vector_imagen_guardada = usuario[0]['vector']
-
-    arr1 = re.sub('\s+', ',', vector_imagen_guardada)
+    usuario = usuarioModel.get_usuario_by_dni(int(request.form['dni']))
+    if(len(usuario) == 0):
+        return jsonify({"result": "No existe usuario con ese DNI" , "estado": "0"})
+    else:
+        vector_imagen_guardada = usuario[0]['vector']
 
     if(vector_imagen_enviada[1] == " "):
         vector_imagen_enviada = '[' + vector_imagen_enviada[2:]
+    if(vector_imagen_guardada[1] == " "):
+        vector_imagen_guardada = '[' + vector_imagen_guardada[2:]
 
+    arr1 = re.sub('\s+', ',', vector_imagen_guardada)
     arr2 = re.sub('\s+', ',', vector_imagen_enviada)
     vector1_numerico = np.array(ast.literal_eval(arr1))
     vector2_numerico = np.array(ast.literal_eval(arr2))
@@ -43,10 +49,14 @@ def create_usuario():
     dist = np.linalg.norm(vector1_numerico - vector2_numerico)
     print(dist)
     if(dist > 0.80):
-        return jsonify({"result": "no coinciden las fotos"})
+        return jsonify({"result": "No es el alumno"})
     else:
-        content = asistenciaModel.create_asistencia("Asistió", request.form['sesion_id'])
-        return content
+        print(usuario[0]['usuario_id'])
+        result_check = asistenciaModel.check_curso_horario(usuario[0]['usuario_id'])
+        if(result_check):
+            return jsonify({"result": "Marcado de asistencia exitoso", "estado": "1"})
+        else:
+            return jsonify({"result": "No tiene ningun curso en dicho horario" , "estado": "0"})
 
 @asistencia_blueprint.route('/asistencia', methods=['DELETE'])
 @cross_origin()
@@ -60,6 +70,7 @@ def asistencia():
 
 @asistencia_blueprint.route('/asistencias', methods=['GET'])
 @cross_origin()
+@jwt_required()
 def asistencias():
     return jsonify(asistenciaModel.get_asistencias())
 

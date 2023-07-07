@@ -3,7 +3,8 @@ from flask import request
 from flask import jsonify
 from flask import render_template
 from flask_cors import CORS, cross_origin 
-
+from flask_jwt_extended import JWTManager
+from datetime import timedelta
 from backend.blueprints.alumnos_blueprint import alumno_blueprint
 from backend.blueprints.cursos_blueprint import curso_blueprint
 from backend.blueprints.profesores_blueprint import profesor_blueprint
@@ -18,6 +19,10 @@ from backend.blueprints.img_blueprint import img_blueprint
 
 
 app = Flask(__name__)
+app.config["JWT_SECRET_KEY"] = "pass"
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=2)
+
+jwt = JWTManager(app)
 
 app.register_blueprint(alumno_blueprint)
 app.register_blueprint(curso_blueprint)

@@ -90,6 +90,35 @@ class UsuariosModel:
 
         data = {'result': 1}
         return data
- 
+
+    def get_usuario_by_dni(self, dni):
+        params = {'usuario_dni' : dni}      
+        rv = self.mysql_pool.execute("""SELECT U.id, U.nombre, U.path_foto, 
+                                        U.vector from usuarios U
+                                        where U.DNI = %(usuario_dni)s""", params)                
+        data = []
+        content = {}
+        for result in rv:
+            content = {'usuario_id': result[0], 
+                       'nombre_usuario': result[1], 
+                       'ruta_foto': result[2],
+                       'vector': result[3]
+                       }
+            data.append(content)
+            content = {}
+        return data
+    def check_usuario_login(self, dni , password):
+        params = {'usuario_dni' : dni, 
+                  'password': password}
+        rv = self.mysql_pool.execute("""SELECT U.id from usuarios U
+                                        where U.DNI = %(usuario_dni)s and U.password = %(password)s""", params)  
+        data = []
+        content = {}
+        for result in rv:
+            content = {'usuario_id': result[0]}
+            data.append(content)
+            content = {}
+        return data
+
 if __name__ == "__main__":    
     tm = UsuariosModel()

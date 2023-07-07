@@ -14,7 +14,7 @@ grupo_blueprint = Blueprint('grupo_blueprint', __name__)
 @grupo_blueprint.route('/grupo_create', methods=['POST'])
 @cross_origin()
 def create_grupo():
-    content = model.create_grupo(request.json['curso_id'],request.json['horario_id'], request.json['categoria'] )    
+    content = model.create_grupo(request.json['curso_id'],request.json['sesion_id'], request.json['categoria'] )    
     return jsonify(content)
 
 @grupo_blueprint.route('/grupo', methods=['DELETE'])

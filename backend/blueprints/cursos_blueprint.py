@@ -14,7 +14,7 @@ curso_blueprint = Blueprint('curso_blueprint', __name__)
 @curso_blueprint.route('/curso_create', methods=['POST'])
 @cross_origin()
 def create_curso():
-    content = model.create_curso(request.json['nombre'], request.json['descripcion'], request.json['profesor_id'])    
+    content = model.create_curso(request.json['nombre'], request.json['descripcion'])    
     return jsonify(content)
 
 @curso_blueprint.route('/curso', methods=['DELETE'])
@@ -27,7 +27,7 @@ def delete_curso():
 def curso():
     return jsonify(model.get_curso(int(request.json['curso_id'])))
 
-@curso_blueprint.route('/cursos', methods=['POST'])
+@curso_blueprint.route('/cursos', methods=['GET'])
 @cross_origin()
 def cursos():
     return jsonify(model.get_cursos())

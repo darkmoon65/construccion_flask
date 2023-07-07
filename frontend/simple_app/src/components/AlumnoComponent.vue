@@ -161,14 +161,14 @@ export default{
           this.makeToast('danger', 'Hubo un error en el backend')
         })
     },
-    deleteUser (user) {
+    deleteUser (alumno) {
       var configRequest = {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       }
-      axios.post(this.postURL + '/usuario_delete', {usuario_id: user.usuario_id}, { configRequest })
+      axios.post(this.postURL + '/alumno_delete', {alumno_id: alumno.alumno_id}, { configRequest })
         .then(res => {
-          this.alumnos.splice(this.alumnos.indexOf(user), 1)
+          this.alumnos.splice(this.alumnos.indexOf(alumno), 1)
           console.log(res.data)
           this.makeToast('success', 'Usuario eliminado')
         })

@@ -41,7 +41,7 @@ class AlumnosModel:
 
     def delete_alumno(self, alumno_id):    
         params = {'alumno_id' : alumno_id}      
-        query = """delete from alumnos where id_alumno = %(alumno_id)s """    
+        query = """delete from alumnos where id = %(alumno_id)s """    
         self.mysql_pool.execute(query, params, commit=True)   
 
         data = {'result': 1}

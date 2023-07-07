@@ -1,86 +1,90 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-dark bg-dark fixed-top">
+    <div v-if="get_data()">
+            <nav class="navbar navbar-dark bg-dark fixed-top">
         <button id="openNav" class="btn btn-dark" v-on:click='change()'>
             <span class="navbar-toggler-icon"></span>
         </button>
     </nav>
-  <div>
-    <div id="menuId" style="display:none ;z-index: 999;position: fixed; background-color: #111827; color: white; height: 93%; top: 7%; overflow-y: auto;" >
-        <div class="sidebar-sticky pt-3">
-            <ul class="nav flex-column">
-                    <li class="nav-item p-2">
-                        <div class="text-center">
-                            <img src="./assets/perfil.png" style="height:70px; border-radius: 40px;" />
-                            <label class="nav-link">Usuario 1</label>
-                        </div>
+    <div>
+        <div id="menuId" style="display:none ;z-index: 999;position: fixed; background-color: #111827; color: white; height: 93%; top: 7%; overflow-y: auto;" >
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                        <li class="nav-item p-2">
+                            <div class="text-center">
+                                <img src="./assets/perfil.png" style="height:70px; border-radius: 40px;" />
+                                <label class="nav-link">Usuario 1</label>
+                            </div>
 
-                        <hr />
-                    </li>
+                            <hr />
+                        </li>
 
-                    <li class="nav-item">
-                        <router-link to='/' class="nav-link">
-                            <div class="row align-items-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">home</i>
-                                <span class="col-md-9">Inicio </span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to='/justificaciones' class="nav-link">
-                            <div class="row align-items-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">sort</i>
-                                <span class="col-md-9">Justificacion</span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                       <router-link to='/horarios' class="nav-link">
-                            <div class="row align-items-md-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">timer</i>
-                                <span class="col-md-9">Horario</span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                      <router-link to='/asistencias' class="nav-link">
-                            <div class="row align-items-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">equalizer</i>
-                                <span class="col-md-9">Asistencia</span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to='/usuarios' class="nav-link">
-                            <div class="row align-items-md-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">group</i>
-                                <span class="col-md-10">Usuarios</span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <router-link to='/alumnos' class="nav-link">
-                            <div class="row align-items-md-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">group</i>
-                                <span class="col-md-10">Alumnos</span>
-                            </div>
-                        </router-link>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <div class="row align-items-center">
-                                <i class="Tiny material-icons col-md-2" aria-hidden="true">exit_to_app</i>
-                                <span class="col-md-9">Salir</span>
-                            </div>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <router-link to='/' class="nav-link">
+                                <div class="row align-items-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">home</i>
+                                    <span class="col-md-9">Inicio </span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item" v-if="get_tipo() == 'administrador'">
+                            <router-link to='/justificaciones' class="nav-link">
+                                <div class="row align-items-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">sort</i>
+                                    <span class="col-md-9">Justificacion</span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item" v-if="get_tipo() == 'administrador'">
+                        <router-link to='/horarios' class="nav-link">
+                                <div class="row align-items-md-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">timer</i>
+                                    <span class="col-md-9">Horario</span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item" v-if="get_tipo() == 'alumno'">
+                        <router-link to='/asistencias' class="nav-link">
+                                <div class="row align-items-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">equalizer</i>
+                                    <span class="col-md-9">Asistencia</span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item" v-if="get_tipo() == 'administrador'">
+                            <router-link to='/usuarios' class="nav-link">
+                                <div class="row align-items-md-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">group</i>
+                                    <span class="col-md-10">Usuarios</span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item" v-if="get_tipo() == 'administrador'">
+                            <router-link to='/alumnos' class="nav-link">
+                                <div class="row align-items-md-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">group</i>
+                                    <span class="col-md-10">Alumnos</span>
+                                </div>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" v-on:click="logout()">
+                                <div class="row align-items-center">
+                                    <i class="Tiny material-icons col-md-2" aria-hidden="true">exit_to_app</i>
+                                    <span class="col-md-9">Salir</span>
+                                </div>
+                            </a>
+                        </li>
 
-            </ul>
+                </ul>
+            </div>
         </div>
+        <router-view id="main" style="margin-left: 0%; display: block ; margin-top: 5%; overflow-y: auto;"/>
     </div>
-    <router-view id="main" style="margin-left: 0%; display: block ; margin-top: 5%; overflow-y: auto;"/>
-  </div>
-
+    </div>
+    <div v-else-if="!get_data()">
+        <router-view id="main" style="margin-left: 0%; display: block ; margin-top: 5%; overflow-y: auto;"/>
+    </div>
   </div>
 </template>
 
@@ -94,6 +98,14 @@ export default {
   },
 
   methods: {
+    get_data: function () {
+      console.log('get')
+      return localStorage.getItem('token')
+    },
+    get_tipo: function () {
+      console.log('get')
+      return localStorage.getItem('typeUser')
+    },
     change () {
       if (this.estado === true) {
         document.getElementById('main').style.marginLeft = '20%'
@@ -108,6 +120,11 @@ export default {
         document.getElementById('menuId').style.display = 'none'
         this.estado = true
       }
+    },
+    logout () {
+      localStorage.removeItem('token')
+      localStorage.removeItem('typeUser')
+      this.$router.push('/login')
     }
   }
 }

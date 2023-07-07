@@ -18,25 +18,22 @@ class CursosModel:
         return data
 
     def get_cursos(self):  
-        rv = self.mysql_pool.execute("""SELECT C.id, C.nombre, C.descripcion, U.nombre from cursos C 
-                                        inner join profesores P on C.profesor_id = P.id
-                                        inner join usuarios U on P.id_usuario = U.id""")  
+        rv = self.mysql_pool.execute("""SELECT C.id, C.nombre, C.descripcion from cursos C """)  
         data = []
         content = {}
         for result in rv:
-            content = {'curso_id': result[0], 'nombre_curso': result[1], 'curso_descripcion': result[2], 'profesor_nombre': result[3]}
+            content = {'curso_id': result[0], 'nombre_curso': result[1], 'curso_descripcion': result[2]}
             data.append(content)
             content = {}
         return data
 
-    def create_curso(self, nombre, descripcion, profesor_id):    
+    def create_curso(self, nombre, descripcion):    
         data = {
             'nombre' : nombre,
-            'descripcion' : descripcion,
-            'profesor_id' : profesor_id,
+            'descripcion' : descripcion
         }  
-        query = """insert into cursos (nombre, descripcion, profesor_id) 
-            values (%(nombre)s, %(descripcion)s, %(profesor_id)s)"""    
+        query = """insert into cursos (nombre, descripcion) 
+            values (%(nombre)s, %(descripcion)s)"""    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 
         data['id'] = cursor.lastrowid

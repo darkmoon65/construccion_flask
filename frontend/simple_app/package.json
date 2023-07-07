@@ -17,6 +17,7 @@
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.23.1",
     "vue": "^2.7.14",
+    "vue-picture-swipe": "^2.1.0",
     "vue-resource": "^1.5.3",
     "vue-router": "^3.0.1"
   },

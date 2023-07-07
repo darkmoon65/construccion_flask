@@ -10,6 +10,9 @@ import copy
 import sys
 import numpy as np
 import os
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import jwt_required, get_jwt_identity
+
 from backend.models.mysql_usuarios_model import UsuariosModel
 model = UsuariosModel()
 
@@ -46,6 +49,7 @@ def usuario():
 
 @usuario_blueprint.route('/usuarios', methods=['GET'])
 @cross_origin()
+@jwt_required()
 def usuarios():
     return jsonify(model.get_usuarios())
 
@@ -76,3 +80,16 @@ def update_usuario():
                 request.form['nombre'],request.form['password'],nombreImg, 
                 str(vector['result']))
     return jsonify(content)
+
+@usuario_blueprint.route('/login', methods=['POST'])
+@cross_origin()
+def login():
+    dni = request.json.get("dni", None)
+    password = request.json.get("password", None)
+    
+    user = model.check_usuario_login(dni, password)
+    if len(user) < 1:
+        return jsonify({"status": "false", "msg": "Dni o contraseña incorrecta"}), 401
+
+    access_token = create_access_token(identity = user[0]['usuario_id'])
+    return jsonify({ "token": access_token, "user_id": user[0]['usuario_id'] })

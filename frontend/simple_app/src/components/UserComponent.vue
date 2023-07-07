@@ -271,7 +271,12 @@ export default{
   },
   created () {
     // with axios
-    axios.get(this.postURL + '/usuarios').then((res) => {
+    const config = {
+      headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    }
+    axios.get(this.postURL + '/usuarios', config).then((res) => {
       console.log(res.data)
       this.users = res.data
     })

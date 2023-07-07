@@ -4,6 +4,8 @@ import UserComponent from '@/components/UserComponent'
 import HomeComponent from '@/components/HomeComponent'
 import AlumnoComponent from '@/components/AlumnoComponent'
 import HorarioComponent from '@/components/HorarioComponent'
+import AsistenciaComponent from '@/components/AsistenciaComponent'
+import LoginComponent from '@/components/LoginComponent'
 
 Vue.use(Router)
 
@@ -12,27 +14,39 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: HomeComponent
+      component: HomeComponent,
+      meta: {requireAuth: true, administrador: true, alumno: true, profesor: true}
     },
     {
       path: '/usuarios',
-      component: UserComponent
+      component: UserComponent,
+      meta: {requireAuth: true, administrador: true}
     },
     {
+      name: 'justificaciones',
       path: '/justificaciones',
-      component: UserComponent
+      component: UserComponent,
+      meta: {requireAuth: true, administrador: true}
     },
     {
       path: '/horarios',
-      component: HorarioComponent
+      component: HorarioComponent,
+      meta: {requireAuth: true, administrador: true}
     },
     {
       path: '/asistencias',
-      component: UserComponent
+      component: AsistenciaComponent,
+      meta: {requireAuth: true, administrador: true, alumno: true}
     },
     {
       path: '/alumnos',
-      component: AlumnoComponent
+      component: AlumnoComponent,
+      meta: {requireAuth: true, administrador: true}
+    },
+    {
+      path: '/login',
+      component: LoginComponent,
+      name: 'Login'
     }
   ]
 })

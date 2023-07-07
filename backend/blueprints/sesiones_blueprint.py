@@ -19,8 +19,7 @@ sesion_blueprint = Blueprint('sesion_blueprint', __name__)
 @cross_origin()
 def create_sesion():
 
-    content = sesionModel.create_sesion(request.json['fecha'],request.json['hora'], 
-               request.json['tema'],request.json['horario_id'], request.json['justificacion_id'])
+    content = sesionModel.create_sesion(request.json['tema'],request.json['horario_id'], request.json['justificacion_id'])
     return jsonify(content)
 
 @sesion_blueprint.route('/sesion', methods=['DELETE'])

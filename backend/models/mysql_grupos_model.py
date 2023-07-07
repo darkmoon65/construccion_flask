@@ -28,14 +28,14 @@ class GruposModel:
             content = {}
         return data
 
-    def create_grupo(self, curso_id, horario_id, categoria):    
+    def create_grupo(self, curso_id, sesion_id, categoria):    
         data = {
             'curso_id' : curso_id,
-            'horario_id' : horario_id,
+            'sesion_id' : sesion_id,
             'categoria' : categoria,
         }  
-        query = """insert into grupos (curso_id, horario_id, categoria) 
-            values (%(curso_id)s,%(horario_id)s,%(categoria)s)"""    
+        query = """insert into grupos (curso_id, sesion_id, categoria) 
+            values (%(curso_id)s,%(sesion_id)s,%(categoria)s)"""    
         cursor = self.mysql_pool.execute(query, data, commit=True)   
 
         data['id'] = cursor.lastrowid

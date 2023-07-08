@@ -36,8 +36,9 @@ export default{
         .message {
             font-family: 'Belanosima', sans-serif;
             font-weight: 600;
-            font-size: 18px;
+            font-size: 36px;
             margin-bottom: 20px;
+            align-items: center;
         }
 
         .lottie-error{

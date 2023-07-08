@@ -1,9 +1,9 @@
 <template>
     <div class='error_component'>
         <div class="message">
-            UPS, no tienes accesos.
+            UPS, no tienes acceso
         </div>
-        <div ref="animationContainer" class="lottie-welcome"></div>
+        <div ref="animationError" class="lottie-error"></div>
     </div>
 </template>
 
@@ -14,11 +14,11 @@ export default{
 
   mounted () {
     lottie.loadAnimation({
-      container: this.$refs.animationContainer,
+      container: this.$refs.animationError,
       renderer: 'svg',
       loop: true,
       autoplay: true,
-      path: 'https://assets6.lottiefiles.com/private_files/lf30_TBKozE.json' // Ruta a tu archivo JSON de animación
+      path: 'https://assets9.lottiefiles.com/packages/lf20_fl0aRz.json' // Ruta a tu archivo JSON de animación
     })
   }
 }
@@ -33,21 +33,20 @@ export default{
             padding-left: 43%;
             padding-top: 6%;
         }
-
-        .lottie-welcome{
-            align-items: center;
-        }
-        .error_component {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
         .message {
-            font-weight: bold;
+            font-family: 'Belanosima', sans-serif;
+            font-weight: 600;
             font-size: 36px;
             margin-bottom: 20px;
-            font-family: 'Belanosima', sans-serif;
+            align-items: center;
+        }
+
+        .lottie-error{
+            align-items: center;
+        }
+
+        .logo{
+            padding-left: 11%;
         }
         .send{
             padding-left: 16%;

@@ -1,6 +1,9 @@
 <template>
-    <div class='simple_component'>
-            <div ref="animationError" class="lottie-error"></div>
+    <div class='error_component'>
+        <div class="message">
+            UPS, no tienes acceso
+        </div>
+        <div ref="animationError" class="lottie-error"></div>
     </div>
 </template>
 
@@ -22,6 +25,7 @@ export default{
 </script>
 
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@600&display=swap');
         .simple_component{
             display: flex;
             align-items: center;
@@ -29,10 +33,14 @@ export default{
             padding-left: 43%;
             padding-top: 6%;
         }
+        .message {
+            font-family: 'Belanosima', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
 
         .lottie-error{
-            width: 300px;
-            height: 300px;
             align-items: center;
         }
 
